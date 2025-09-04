@@ -24,13 +24,9 @@ class Aplicativo(Base):
     __tablename__="aplicativos"
     idAplicativo=Column("idAplicativo",Integer,primary_key=True,autoincrement=True)
     aplicativo=Column("aplicativo",String)
-    TextoAplicativo=Column("TextoAplicativo",ForeignKey("tweets.texto"))
     idTexto=Column("idTexto",ForeignKey("tweets.id"))
-    def __init__(self,aplicativo,textoAplicativo,IdTexto):
+    def __init__(self,aplicativo,IdTexto):
         self.aplicativo=aplicativo
-        self.TextoAplicativo=textoAplicativo
         self.idTexto=IdTexto
-
-
 
 Base.metadata.create_all(bind=bd)

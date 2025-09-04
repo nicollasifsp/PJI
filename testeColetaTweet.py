@@ -1,4 +1,9 @@
-from bd_setup import Session, Tweet, Aplicativo 
+seguranca={ "bearerToken":"AAAAAAAAAAAAAAAAAAAAADMQ3QEAAAAAfXq1Zp5%2F5SyTJDyV5ZHy%2BJRA7ic%3DAgSZOZ04qJXUtkY9IGJZHjURYSS1slpFdcmwgNgUUKqccajPyQ",
+           "apiKey":"wEpZllmGiYn0UCJMP3cPX3jMc",
+           "apiKeySecret":"pLpis5csG6pKpmH31jmuldDJ8eOJvb3GHZf8N3U1MRL4o5PLzw",
+           "accessToken":"1445886306257625088-BGhzo8e9czayHiozy5DA85UnXE4ba0",
+           "accessTokenSecret":"PAEOVLyN51nLWlTKXYGBlkLh25xJPL9pOxvzBm8HBIl6Q" }
+from bancoDadosProjeto import Session, Tweet, Aplicativo 
 import datetime
 import tweepy as tw
 import time
@@ -35,7 +40,7 @@ def coletaTweet(tema, maxResult):
                 users = {u["id"]: u for u in response.includes["users"]}
                 for tweet in response.data:
                     #Tweet=(self,texto,dataColeta,nomeUsuario,dataCriacao)
-                    #Aplicativo=(self,aplicativo,textoAplicativo,IdTexto)
+                    #Aplicativo=(self,aplicativo,IdTexto)
                     user = users[tweet.author_id]
                     existe = session.query(Tweet).filter_by(
                         texto=tweet.text,
@@ -46,9 +51,9 @@ def coletaTweet(tema, maxResult):
                     if not existe:
                         dadosTweet = Tweet(tweet.text, data, user.username, tweet.created_at.date())
                         session.add(dadosTweet)
-                        session.commit()
+                        session.fash()
 
-                        dadosAplicativo = Aplicativo("X", tweet.text, dadosTweet.id)
+                        dadosAplicativo = Aplicativo("X", dadosTweet.id)
                         session.add(dadosAplicativo)
                         session.commit()
                     else:
