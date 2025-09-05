@@ -27,21 +27,18 @@ def buscar_video(tema,maxResul):
             )
         
             response = request.execute()
-            item = response["items"] 
+            item = response["items"][0]
             video_id = item["id"]["videoId"]
             titulo = item["snippet"]["title"]
             canal = item["snippet"]["channelTitle"]
             time.sleep(2)
-    except:
-        print("ocorreu um erro. Esperando 15 minutos para voltar a rodar.")
-        contagem(15*60)
+    except Exception as e:
+        print(f"ocorreu um erro.{e}")
 
     return {"id": video_id, "titulo": titulo, "canal": canal}
 
-# Função para pegar até 10 comentários de um vídeo
+
 def pegar_comentarios(video_id, max_comentarios):
-    
-    comentarios = []
     request = youtube.commentThreads().list(
         part="snippet",
         videoId=video_id,
@@ -63,7 +60,7 @@ def pegar_comentarios(video_id, max_comentarios):
         if not existe:
             dadosTweet = Tweet(comentario, data, autor, dataCriacao)
             session.add(dadosTweet)
-            session.fash()
+            session.commit()
 
             dadosAplicativo=Aplicativo("YOUTUBE",dadosTweet.id)
             session.add(dadosAplicativo)
@@ -71,19 +68,13 @@ def pegar_comentarios(video_id, max_comentarios):
         
 #Tweet=(self,texto,dataColeta,nomeUsuario,dataCriacao)
 #Aplicativo=(self,aplicativo,IdTexto)
-    
 
 # Tema que você quer pesquisar
 tema = "depressão"
-
 # Busca 1 vídeo
-video = buscar_video(tema,maxResul=100)
-print(f"Vídeo encontrado: {video['titulo']} (Canal: {video['canal']})")
-print(f"Link: https://www.youtube.com/watch?v={video['id']}\n")
-
+maxResul=100
+maxComentario=100
+video = buscar_video(tema,maxResul=10)
 # Coleta 10 comentários desse vídeo
-comentarios = pegar_comentarios(video["id"], max_comentarios=10)
+comentarios = pegar_comentarios(video["id"], maxComentarios=10)
 
-print(f"Foram coletados {len(comentarios)} comentários:\n")
-for c in comentarios:
-    print("-", c.replace("\n", " "))
