@@ -51,7 +51,7 @@ def coletaTweet(tema, maxResult):
                     if not existe:
                         dadosTweet = Tweet(tweet.text, data, user.username, tweet.created_at.date())
                         session.add(dadosTweet)
-                        session.fash()
+                        session.commit()
 
                         dadosAplicativo = Aplicativo("X", dadosTweet.id)
                         session.add(dadosAplicativo)
