@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine,Column, String,Integer,DATE,ForeignKey
+from sqlalchemy import create_engine,Column, String,Integer,DATE,ForeignKey, Float
 from sqlalchemy.orm import sessionmaker, declarative_base
 bd=create_engine("sqlite:///bancoDados.db")
 Session=sessionmaker(bind=bd)
@@ -29,4 +29,19 @@ class Aplicativo(Base):
         self.aplicativo=aplicativo
         self.idTexto=IdTexto
 
+class Sentimento(Base):
+    __tablename__="sentimentos"
+    idSentimento=Column("idSentimento",Integer,primary_key=True,autoincrement=True)
+    sentimento=Column("sentimento",String)
+    acuracia=Column("acuracia",Float)
+    def __init__(self,sentimento,acuracia):
+        self.sentimento=sentimento
+        self.acuracia=acuracia
+
+
+class PalavraChave(Base):
+    __tablename__="palavrasChave"
+    idPalavra=Column("idPalavra",Integer, primary_key=True,autoincrement=True)
+    palavra=Column("palavra", String)
+    idTexto=Column("idTexto",ForeignKey("tweets.id"))
 Base.metadata.create_all(bind=bd)
