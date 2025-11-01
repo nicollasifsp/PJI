@@ -3,7 +3,7 @@ seguranca={ "bearerToken":"AAAAAAAAAAAAAAAAAAAAADMQ3QEAAAAAfXq1Zp5%2F5SyTJDyV5ZH
            "apiKeySecret":"pLpis5csG6pKpmH31jmuldDJ8eOJvb3GHZf8N3U1MRL4o5PLzw",
            "accessToken":"1445886306257625088-BGhzo8e9czayHiozy5DA85UnXE4ba0",
            "accessTokenSecret":"PAEOVLyN51nLWlTKXYGBlkLh25xJPL9pOxvzBm8HBIl6Q" }
-from bancoDadosProjeto import Session, Tweet, Aplicativo 
+from bancoDadosProjeto import Session, Postagem, Aplicativo 
 import datetime
 import tweepy as tw
 import time
@@ -42,14 +42,14 @@ def coletaTweet(tema, maxResult):
                     #Tweet=(self,texto,dataColeta,nomeUsuario,dataCriacao)
                     #Aplicativo=(self,aplicativo,IdTexto)
                     user = users[tweet.author_id]
-                    existe = session.query(Tweet).filter_by(
+                    existe = session.query(Postagem).filter_by(
                         texto=tweet.text,
                         nomeUsuario=user.username,
                         dataCriacao=tweet.created_at.date()
                     ).first()
                    
                     if not existe:
-                        dadosTweet = Tweet(tweet.text, data, user.username, tweet.created_at.date())
+                        dadosTweet = Postagem(tweet.text, data, user.username, tweet.created_at.date())
                         session.add(dadosTweet)
                         session.commit()
 

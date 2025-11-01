@@ -6,8 +6,8 @@ session=Session()
 Base=declarative_base()
 
 
-class Tweet(Base):
-    __tablename__="tweets"
+class Postagem(Base):
+    __tablename__="postagens"
     id=Column("id",Integer,primary_key=True,autoincrement=True)
     texto=Column("texto",String)
     dataColeta=Column("dataColeta",DATE)
@@ -24,7 +24,7 @@ class Aplicativo(Base):
     __tablename__="aplicativos"
     idAplicativo=Column("idAplicativo",Integer,primary_key=True,autoincrement=True)
     aplicativo=Column("aplicativo",String)
-    idTexto=Column("idTexto",ForeignKey("tweets.id"))
+    idTexto=Column("idTexto",ForeignKey("postagens.id"))
     def __init__(self,aplicativo,IdTexto):
         self.aplicativo=aplicativo
         self.idTexto=IdTexto
@@ -34,14 +34,21 @@ class Sentimento(Base):
     idSentimento=Column("idSentimento",Integer,primary_key=True,autoincrement=True)
     sentimento=Column("sentimento",String)
     acuracia=Column("acuracia",Float)
-    def __init__(self,sentimento,acuracia):
+    idTexto=Column("idTexto",ForeignKey("postagens.id"))
+    def __init__(self,sentimento,acuracia,idTexto):
         self.sentimento=sentimento
         self.acuracia=acuracia
+        self.idTexto=idTexto
 
 
 class PalavraChave(Base):
     __tablename__="palavrasChave"
     idPalavra=Column("idPalavra",Integer, primary_key=True,autoincrement=True)
     palavra=Column("palavra", String)
-    idTexto=Column("idTexto",ForeignKey("tweets.id"))
+    idTexto=Column("idTexto",ForeignKey("postagens.id"))
+    def __init__(self,palavra,idTexto):
+        self.palavra=palavra
+        self.idTexto=idTexto
+
 Base.metadata.create_all(bind=bd)
+

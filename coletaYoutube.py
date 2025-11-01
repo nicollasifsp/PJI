@@ -4,10 +4,10 @@ seguranca={"IDCliente":"237758416533-pd9u0fv8t7ijqv31n1rqrqh69f87q8kl.apps.googl
 
 from googleapiclient.discovery import build
 import time
-from bancoDadosProjeto import session,Aplicativo,Tweet
+from bancoDadosProjeto import session,Aplicativo,Postagem
 import datetime
 data=datetime.date.today()
-
+session=session()
 
 # Constrói cliente YouTube
 youtube = build("youtube", "v3", developerKey=seguranca["chaveApi"])
@@ -52,9 +52,9 @@ def pegarComentarios(video_id, maxComentarios):
         dataCriacao=item["snippet"]["topLevelComment"]["snippet"]["publishedAt"]
         dataCriacao = datetime.datetime.fromisoformat(dataCriacao.replace("Z", "+00:00")).date()
         dataColeta=data
-        existe = session.query(Tweet).filter_by(texto=comentario,dataColeta=data,nomeUsuario=autor,dataCriacao=dataCriacao).first()
+        existe = session.query(Postagem).filter_by(texto=comentario,dataColeta=data,nomeUsuario=autor,dataCriacao=dataCriacao).first()
         if not existe:
-            dadosTweet = Tweet(comentario, data, autor, dataCriacao)
+            dadosTweet = Postagem(comentario, data, autor, dataCriacao)
             session.add(dadosTweet)
             session.commit()
 
