@@ -66,8 +66,8 @@ def pegarComentarios(video_id, maxComentarios):
 #Aplicativo=(self,aplicativo,IdTexto)
 
 # Tema que você quer pesquisar
-tema = "depressão"
-# Busca 1 vídeo
+tema = ["depressão"]
+
 maxResul=100
 maxComentario=100
 video = buscarVideo(tema,maxResul=10)

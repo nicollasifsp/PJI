@@ -7,7 +7,7 @@ seguranca={
 import praw
 import datetime
 from bancoDadosProjeto import Session, Postagem, Aplicativo 
-from coletaTweet import contagem
+from coleta.coletaTweet import contagem
 #Tweet=(self,texto,dataColeta,nomeUsuario,dataCriacao)
 #Aplicativo=(self,aplicativo,IdTexto)
 data=datetime.datetime.today()
@@ -33,21 +33,6 @@ def coletaReddit(tema, maxResult):
                 autor=str(post.author) if post.author else "Autor desconhecido"
                 dataCriação = datetime.datetime.fromtimestamp(post.created_utc)
 
-                existe = session.query(Postagem).filter_by(
-                            texto=texto,
-                            nomeUsuario=autor,
-                            dataCriacao=dataCriação
-                        ).first()
-                if not existe:
-                    dadosReddit=Postagem(texto,data,autor, dataCriação)
-                    Session.add(dadosReddit)
-                    Session.commit()
-
-                    dadosAplicativo=Aplicativo("Reddit",dadosReddit.id)
-                    Session.add(dadosAplicativo)
-                    Session.commit()
-                else:
-                    print("esse registros ja foram armazenados indo para outro dados")
                     
             except Exception as erro:
                 print(f"ocorreu esse esso esperando {1.5*60}s")
