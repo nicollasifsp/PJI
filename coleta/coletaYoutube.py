@@ -4,10 +4,9 @@ seguranca={"IDCliente":"237758416533-pd9u0fv8t7ijqv31n1rqrqh69f87q8kl.apps.googl
 
 from googleapiclient.discovery import build
 import time
-from bancoDadosProjeto import session,Aplicativo,Postagem
 import datetime
 data=datetime.date.today()
-session=session()
+
 
 # Constrói cliente YouTube
 youtube = build("youtube", "v3", developerKey=seguranca["chaveApi"])
@@ -45,32 +44,29 @@ def pegarComentarios(video_id, maxComentarios):
         maxResults=maxComentarios
     )
     response = request.execute()
-
+    i=1
     for item in response.get("items", []):
         comentario = item["snippet"]["topLevelComment"]["snippet"]["textDisplay"]
         autor = item["snippet"]["topLevelComment"]["snippet"]["authorDisplayName"]
         dataCriacao=item["snippet"]["topLevelComment"]["snippet"]["publishedAt"]
         dataCriacao = datetime.datetime.fromisoformat(dataCriacao.replace("Z", "+00:00")).date()
         dataColeta=data
-        existe = session.query(Postagem).filter_by(texto=comentario,dataColeta=data,nomeUsuario=autor,dataCriacao=dataCriacao).first()
-        if not existe:
-            dadosTweet = Postagem(comentario, data, autor, dataCriacao)
-            session.add(dadosTweet)
-            session.commit()
-
-            dadosAplicativo=Aplicativo("YOUTUBE",dadosTweet.id)
-            session.add(dadosAplicativo)
-            session.commit()
         
+        print(f"\ndados coletados na {i}º tentativa\n")
+        print(f"comentario: {comentario}\n")
+        print(f"autor: {autor}\n")
+        print(f"dataCriacao: {dataCriacao}\n")
+        print(f"dataColeta: {dataColeta}\n")
+        i=+1       
 #Tweet=(self,texto,dataColeta,nomeUsuario,dataCriacao)
 #Aplicativo=(self,aplicativo,IdTexto)
 
 # Tema que você quer pesquisar
-tema = ["depressão"]
+tema = ["mano deyvin"]
 
 maxResul=100
 maxComentario=100
-video = buscarVideo(tema,maxResul=10)
+video = buscarVideo(tema,maxResul=5)
 # Coleta 10 comentários desse vídeo
 comentarios = pegarComentarios(video["id"], maxComentarios=10)
 print("videos salvos com sucesso.")

@@ -38,9 +38,9 @@ def coletaTweet(tema, maxResult):
             
             if response.data:
                 users = {u["id"]: u for u in response.includes["users"]}
+                print(f"response.data: {response.data}\n")
+                print(f"users: {users}\n")
                 for tweet in response.data:
-                    #Tweet=(self,texto,dataColeta,nomeUsuario,dataCriacao)
-                    #Aplicativo=(self,aplicativo,IdTexto)
                     user = users[tweet.author_id]
                    
             else:

@@ -6,12 +6,11 @@ seguranca={
 #Não esta com as chaves pois ainda não foi liberado a autorização do reedit
 import praw
 import datetime
-from bancoDadosProjeto import Session, Postagem, Aplicativo 
+
 from coleta.coletaTweet import contagem
-#Tweet=(self,texto,dataColeta,nomeUsuario,dataCriacao)
-#Aplicativo=(self,aplicativo,IdTexto)
+
 data=datetime.datetime.today()
-session=Session()
+
 def coletaReddit(tema, maxResult):
     if isinstance(tema, str):
         tema = [tema]
